@@ -4,8 +4,10 @@ import { AnimateSharedLayout } from "framer-motion";
 import { ROUTES } from "../constants/routes";
 import { Header } from "../components/header";
 import PokemonsStoreScreen from "../screens/pokemons-store";
+import LoadingScreen from "../screens/loading-screen";
 
 function App() {
+  return <LoadingScreen />;
   return (
     <div className="container">
       <AnimateSharedLayout type="crossfade">

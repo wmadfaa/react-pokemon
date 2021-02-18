@@ -1,0 +1,42 @@
+$colors: #f2385a, #f5a503, #e9f1df, #56d9cd, #3aa1bf;
+$max: length($colors);
+$dash: 70;
+$dash-gap: 10;
+$dash-space: $dash * ($max - 1) + $dash-gap * $max;
+$time: 6s;
+$time-step: $time/$max;
+
+.root {
+  @apply absolute w-full h-full text-6xl sm:text-5xl md:text-4xl lg:text-2xl tracking-widest font-mono uppercase;
+}
+
+.text {
+  fill: none;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-dasharray: $dash $dash-space;
+  stroke-dashoffset: 0;
+  animation: stroke $time infinite linear;
+
+  @screen sm {
+    stroke-width: 1.5;
+  }
+
+  @screen lg {
+    stroke-width: 1;
+  }
+
+  @for $item from 1 through $max {
+    &:nth-child(#{$max}n + #{$item}) {
+      $color: nth($colors, $item);
+      stroke: $color;
+      animation-delay: -($time-step * $item);
+    }
+  }
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: -($dash + $dash-gap) * $max;
+  }
+}
