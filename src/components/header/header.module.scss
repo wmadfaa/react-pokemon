@@ -1,0 +1,11 @@
+.root {
+  @apply pb-5 border-b border-gray-700;
+}
+
+.content {
+  @apply sm:flex sm:justify-between sm:items-end;
+}
+
+.actions {
+  @apply sm:mt-0 sm:flex mt-3 sm:items-end;
+}

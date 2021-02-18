@@ -1,0 +1,11 @@
+.root {
+  @apply sm:w-0 sm:flex-1;
+}
+
+.title {
+  @apply mt-1 text-sm text-gray-400 overflow-hidden overflow-ellipsis uppercase;
+}
+
+.subtitle {
+  @apply text-lg font-medium text-gray-50 capitalize;
+}

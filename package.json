@@ -9,6 +9,7 @@
     "test": "craco test"
   },
   "dependencies": {
+    "classnames": "^2.2.6",
     "framer-motion": "^3.4.0",
     "react": "^0.0.0-experimental-6f8843837",
     "react-dom": "^0.0.0-experimental-6f8843837",
@@ -21,6 +22,7 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.7.1",
+    "@types/classnames": "^2.2.11",
     "@types/jest": "^26.0.20",
     "@types/node": "^14.14.28",
     "@types/react": "^17.0.2",
