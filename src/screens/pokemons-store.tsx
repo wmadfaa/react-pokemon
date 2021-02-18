@@ -1,8 +1,12 @@
-import React from "react";
+import React, { lazy } from "react";
 import { RouteComponentProps } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
-import PokemonsListScreen from "./pokemons-list";
-import PokemonDetailsScreen from "./pokemon-details";
+import { AnimatePresence, AnimateSharedLayout } from "framer-motion";
+import LoadingScreen from "./loading-screen";
+import { usePrefetchInfinitePokemonsListQuery } from "../hooks/use-infinite-pokemons-list-query";
+import { useAsync } from "react-async-hook";
+
+const PokemonsListScreen = lazy(() => import("./pokemons-list"));
+const PokemonDetailsScreen = lazy(() => import("./pokemon-details"));
 
 type params = {
   id: string;
@@ -10,13 +14,21 @@ type params = {
 
 const PokemonsStoreScreen: React.VFC<RouteComponentProps<params>> = (props) => {
   const { id } = props.match.params;
+  const prefetchPokemonsList = usePrefetchInfinitePokemonsListQuery();
+
+  useAsync(async () => {
+    await prefetchPokemonsList.execute();
+  }, []);
+
   return (
-    <>
-      <PokemonsListScreen {...props} />
-      <AnimatePresence>
-        {id && <PokemonDetailsScreen {...props} />}
-      </AnimatePresence>
-    </>
+    <React.Suspense fallback={<LoadingScreen />}>
+      <AnimateSharedLayout type="crossfade">
+        <PokemonsListScreen {...props} />
+        <AnimatePresence>
+          {id && <PokemonDetailsScreen {...props} />}
+        </AnimatePresence>
+      </AnimateSharedLayout>
+    </React.Suspense>
   );
 };
 

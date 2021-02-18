@@ -1,24 +1,49 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import { AnimateSharedLayout } from "framer-motion";
-import { ROUTES } from "../constants/routes";
+import { ReactQueryDevtools } from "react-query/devtools";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQueryErrorResetBoundary,
+} from "react-query";
 import { Header } from "../components/header";
-import PokemonsStoreScreen from "../screens/pokemons-store";
-import LoadingScreen from "../screens/loading-screen";
+import { Navigation } from "./navigation";
+import { Button } from "../components/ui/button";
+import { ErrorBoundary, FallbackProps } from "react-error-boundary";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 0,
+      suspense: true,
+      staleTime: 1000 * 60 * 60 * 30, // 1 month
+    },
+  },
+});
+
+const MainErrorBoundaryFallbackRender = (props: FallbackProps) => {
+  const retry = () => props.resetErrorBoundary();
+  return (
+    <div>
+      There was an error! <Button onClick={retry}>Try again</Button>
+      <pre style={{ whiteSpace: "normal" }}>{props.error.message}</pre>
+    </div>
+  );
+};
 
 function App() {
-  return <LoadingScreen />;
+  const { reset } = useQueryErrorResetBoundary();
   return (
     <div className="container">
-      <AnimateSharedLayout type="crossfade">
+      <QueryClientProvider client={queryClient}>
         <Header />
-        <Router>
-          <Route
-            path={[ROUTES.POKEMON_DETAILS, ROUTES.POKEMONS_LIST]}
-            component={PokemonsStoreScreen}
-          />
-        </Router>
-      </AnimateSharedLayout>
+        <ErrorBoundary
+          fallbackRender={MainErrorBoundaryFallbackRender}
+          onReset={reset}
+        >
+          <Navigation />
+        </ErrorBoundary>
+        <ReactQueryDevtools initialIsOpen />
+      </QueryClientProvider>
     </div>
   );
 }

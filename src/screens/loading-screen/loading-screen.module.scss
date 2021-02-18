@@ -7,7 +7,15 @@ $time: 6s;
 $time-step: $time/$max;
 
 .root {
+  visibility: hidden;
+  animation: 0s linear 0.5s forwards makeVisible;
   @apply absolute w-full h-full text-6xl sm:text-5xl md:text-4xl lg:text-2xl tracking-widest font-mono uppercase;
+}
+
+@keyframes makeVisible {
+  to {
+    visibility: visible;
+  }
 }
 
 .text {
