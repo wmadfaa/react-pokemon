@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-black text-white overflow-y-scroll;
+  }
+
+  #root {
+    @apply flex justify-center;
+  }
+}
+
+@layer utilities {
+  .container {
+    @apply max-w-screen-lg flex-auto py-11 px-6;
+  }
+}
